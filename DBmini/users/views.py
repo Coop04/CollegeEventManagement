@@ -7,49 +7,7 @@ from .models import Event, Registration
 from .forms import AdminLoginForm
 from .forms import EventForm, UserRegistrationForm, UserEventRegistrationForm
 from django.http import JsonResponse
-
-# for user registration
-# def register(request):
-#     if request.method == "POST":
-#         form = UserRegistrationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('/users/login/')  # Redirect to a login page or home
-#     else:
-#         form = UserRegistrationForm()
-
-#     return render(request, 'register.html', {'form': form})
-
 from django.contrib.auth.models import User
-from django.contrib.auth import login
-from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm
-
-# def register(request):
-#     if request.method == "POST":
-#         form = UserRegistrationForm(request.POST)
-#         if form.is_valid():
-#             # Create a new user with the specified fields
-#             user = User.objects.create_user(
-#                 username=form.cleaned_data['username'],
-#                 first_name=form.cleaned_data['first_name'],
-#                 last_name=form.cleaned_data['last_name'],
-#                 email=form.cleaned_data['email']
-#             )
-            
-#             # Set the password securely
-#             user.set_password(form.cleaned_data['password'])
-#             user.save()
-            
-#             # Optional: log the user in after registration
-#             login(request, user)
-            
-#             # Redirect to the login page or home after successful registration
-#             return redirect('/users/login/')  
-#     else:
-#         form = UserRegistrationForm()
-
-#     return render(request, 'register.html', {'form': form})
 
 def register(request):
     if request.method == "POST":
@@ -102,12 +60,10 @@ def adminlogin_view(request):
 
     return render(request, 'adminlogin.html', {'form': form})
 
-# def home(request):
-#     return render(request, 'home.html')
-
 def index(request):
     return render(request, 'index.html')
 
+@login_required
 def profile(request):
     user = request.user  # Get the currently logged-in user
     return render(request, 'profile.html', {'user': user})
@@ -148,6 +104,7 @@ def admin_dashboard(request):
         'total_registrations': total_registrations,
     })
 
+@login_required
 def delete_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     event.delete()

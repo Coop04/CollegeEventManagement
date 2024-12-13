@@ -5,7 +5,3 @@ from .models import Event, Registration
 
 admin.site.register(Event)
 admin.site.register(Registration)
-
-# Cooper
-# coopercoop432@gmail.com
-# 4212
